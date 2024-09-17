@@ -1,4 +1,4 @@
-package com.oops;
+package com.oops.inheritance;
 class Fruit 
 {
     private String color;

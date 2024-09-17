@@ -1,4 +1,4 @@
-package com.oops;
+package com.oops.cohesion;
 class Animals 
 {
     private String name;
@@ -16,14 +16,5 @@ class Animals
     }
     public void sleeping() {
         System.out.println( name + " is sleeping...!");
-    }
-}
-public class LowCohesionDemo 
-{
-    public static void main(String[] args) 
-    {
-        Animal cat = new Animal("cat");
-        cat.speak();
-        cat.eating();
     }
 }

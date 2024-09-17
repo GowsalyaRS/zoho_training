@@ -1,11 +1,4 @@
-package com.oops;
-class PDFDoucument 
-{
-    public void print()
-    {
-       System.out.println("PDF doucument printing");
-    }
-}
+package com.oops.coupling;
 public class TightCouplingDemo 
 {
     public static void main(String[] args) {
