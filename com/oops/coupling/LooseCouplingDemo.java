@@ -1,5 +1,5 @@
 package com.oops.coupling;
-public class LoseCouplingDemo {
+public class LooseCouplingDemo {
     public static void main(String[] args) 
     {
        Doucumentable doucument = new WordDoucument();
