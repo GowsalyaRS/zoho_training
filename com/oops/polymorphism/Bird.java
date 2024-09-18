@@ -1,13 +1,16 @@
 package com.oops.polymorphism;
 
-abstract class Bird 
+class Bird 
 {
     private int flyingKiloMeter;
     Bird(int flyingKiloMeter)
     {
         this.flyingKiloMeter = flyingKiloMeter;
     }
-    abstract void makeSound();  // abstract method so child class overridding compulsory this method
+     void makeSound()  
+     {
+         System.out.println("bird making a sound");
+     }
     public void makeSound(int volume)   // overloaded method same name different argument
     {
         if(volume<5)
