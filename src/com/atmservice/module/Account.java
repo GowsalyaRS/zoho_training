@@ -1,12 +1,13 @@
 package com.atmservice.module;
-public  class Account implements Accountprocess
+public class Account implements AccountProcess
 {
+    private static long accountNo= 23418920101L;
     private Customer customer;
-    protected Long accountNumber;
+    protected  final Long accountNumber;
     private double balance;
-    public Account(Customer customer,Long accountNumber, double balance) {
+    public Account(Customer customer, double balance) {
         this.customer = customer;
-        this.accountNumber = accountNumber;
+        this.accountNumber = accountNo++;
         this.balance = balance;
     }
     public Customer getCustomer(){
@@ -30,23 +31,18 @@ public  class Account implements Accountprocess
          this.balance+=balance;
     }
     @Override
-    public String withdraw(double amount) 
+    public void withdraw(double amount) 
     {
-        if(amount<=balance)
-        {
-            balance-=amount;
-            return "Withdraw Successfully...!   USD " + amount;
-        }
-        return "Amount is Invalid " + amount;
+        balance-=amount;
     }
     @Override
-    public String swipe(double amount) 
+    public void swipe(double amount) 
     {
-        if(amount<=balance)
-        {
-            balance-=amount;
-            return "Swipe Successfully...!   USD " + amount;
-        }
-        return "Amount is Invalid " + amount;
+        balance=(balance-amount);
+    }
+    public void swipe (double amount,double cashBack)
+    {
+       swipe(amount);
+       balance+=cashBack;
     }
 }

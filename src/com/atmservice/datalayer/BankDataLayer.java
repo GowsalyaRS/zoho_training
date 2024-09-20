@@ -1,12 +1,14 @@
 package com.atmservice.datalayer;
 import com.atmservice.module.Account;
 import com.atmservice.module.AtmCard;
+import com.atmservice.module.Bank;
 import com.atmservice.module.Customer;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 public class BankDataLayer 
 {
+    private Bank bank;
     private static BankDataLayer bankDataLayer;
     private Map <Long,AtmCard> atmCards = new HashMap(); 
     private Map <Long,Account> accounts = new HashMap();
@@ -54,5 +56,13 @@ public class BankDataLayer
     public void setAtmCard(AtmCard atmCard)
     {
        atmCards.put(atmCard.getCardNumber(),atmCard);
+    }
+    public  void setBankProperty(Bank bank)
+    {
+       this.bank = bank;
+    }
+    public Bank getBank()
+    {
+        return bank;
     }
 }

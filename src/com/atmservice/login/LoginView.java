@@ -1,7 +1,6 @@
 package com.atmservice.login;
 import java.util.Scanner;
 import com.atmservice.manageaccount.ManageAccountView;
-
 public class LoginView 
 {
     private LoginModelView loginModel;
@@ -25,6 +24,6 @@ public class LoginView
     }
     public static void alert(String str) 
     {
-       System.out.println(str);
+        System.out.println(str);
     }
 }

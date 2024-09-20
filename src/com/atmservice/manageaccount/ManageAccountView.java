@@ -1,11 +1,9 @@
 package com.atmservice.manageaccount;
 import java.util.Scanner;
 import com.atmservice.datalayer.BankDataLayer;
-import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.AtmCard;
 import com.atmservice.module.Customer;
-import com.atmservice.module.XyzBankAccount;
 import java.util.InputMismatchException;
 public class ManageAccountView 
 {
@@ -63,17 +61,17 @@ public class ManageAccountView
     }
     public void createAccount(Customer customer, double amount) 
     {
-        Account account = new XyzBankAccount(customer, amount);
+        Account account = new Account(customer, amount);
         BankDataLayer bank =  BankDataLayer.getBankDataLayer();
         bank.setCustomer(customer);
         bank.setAccountDetails(account);
-        LoginView.alert( "Your Account Number is "+  account.getAccountNumber()); 
+        System.out.println( "Your Account Number is "+  account.getAccountNumber()); 
     }
     public void provideATMCard(AtmCard card,Account account) 
     {
         BankDataLayer bank =  BankDataLayer.getBankDataLayer();
         bank.setAtmCard(card);
         bank.setAccountAtmCard(account, card);
-        LoginView.alert("Your Atm card No : " + card.getCardNumber());
+        System.out.println("Your Atm card No : " + card.getCardNumber());
     }
 }

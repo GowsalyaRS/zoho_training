@@ -26,7 +26,7 @@ public class ManageAccountModelView
             LoginView.alert("User Name is Invalid");
             return;
         }
-        ptrn = Pattern.compile("(0/91)?[7-9][0-9]{9}");  
+        ptrn = Pattern.compile("(0/91)?[6-9][0-9]{9}");  
         matcher = ptrn.matcher(""+phoneNo);
         if(!matcher.matches())
         {

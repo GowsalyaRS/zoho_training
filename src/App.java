@@ -1,6 +1,8 @@
 import com.atmservice.atmmechineview.AtmMechineView;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
+import com.atmservice.module.Bank;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 public class App {
@@ -9,6 +11,7 @@ public class App {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter the Bank Name : ");
         String bankName = scan.nextLine();
+        BankDataLayer.getInstance().setBankProperty(new Bank(bankName));
         System.out.println("\t\tWelcome "+ bankName + " Bank ");
         while(true)
         { 
