@@ -3,9 +3,9 @@ package com.solidprinciple.dependency_inverstion.bad;
 public class VehicleManagement 
 {
     private Bike bike;
-    VehicleManagement(Bike bike)
+    VehicleManagement()
     {
-        this.bike = bike;
+        bike = new Bike();
     }
     void drive()
     {
