@@ -3,7 +3,7 @@ public class GoodOperationDemo
 {
     public static void main(String[] args) 
     {
-        Vehicle electricBike = new ElectricBike();
+        Bike electricBike = new ElectricBike();
         electricBike.drive();
     }
 }

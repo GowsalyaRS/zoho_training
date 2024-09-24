@@ -4,7 +4,7 @@ public class BadOperationDemo
 {
     public static void main(String[] args) 
     {
-        Vehicle car = new Vehicle();
-        car.drive();  
+       VehicleManagement bike = new VehicleManagement(new Bike());
+       bike.drive();
     }
 }

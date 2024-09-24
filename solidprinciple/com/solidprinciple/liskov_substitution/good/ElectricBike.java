@@ -1,5 +1,5 @@
 package com.solidprinciple.liskov_substitution.good;
-public class ElectricBike implements Vehicle
+public class ElectricBike extends Bike
 {
     public  void drive()
     {

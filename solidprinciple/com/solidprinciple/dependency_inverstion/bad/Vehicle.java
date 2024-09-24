@@ -1,13 +1,5 @@
 package com.solidprinciple.dependency_inverstion.bad;
-class Vehicle 
+interface Vehicle 
 {
-    private Car car ;
-    Vehicle()
-    {
-        car = new Car();
-    }
-    void drive()
-    {
-        car.drive();
-    }
+    void drive();
 }
