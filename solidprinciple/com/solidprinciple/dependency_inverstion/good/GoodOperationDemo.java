@@ -6,6 +6,6 @@ public class GoodOperationDemo
     {
        Bike bike = new Bike(); 
        VehicleManagement vehicle = new VehicleManagement(bike);
-       vehicle.drive();
+       vehicle.startEngine();
     } 
 }
