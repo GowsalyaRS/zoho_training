@@ -1,18 +1,19 @@
 package com.atmservice.manageaccount;
 import java.util.Scanner;
-import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.customer.CustomerView;
 import com.atmservice.module.Account;
-import com.atmservice.module.AtmCard;
 import com.atmservice.module.Customer;
+import com.atmservice.module.DebitCard;
 import java.util.InputMismatchException;
+
 public class ManageAccountView 
 {
-    private ManageAccountModelView accountModelView;
+    private ManageAccountViewModel accountViewModel;
     Scanner scan ;
     public ManageAccountView()
     {
         scan = new Scanner(System.in);
-        accountModelView = new ManageAccountModelView(this);
+        accountViewModel= new ManageAccountViewModel(this);
     }
     public void init() 
     {
@@ -20,15 +21,15 @@ public class ManageAccountView
         {
             try {
                 System.out.println("=====================================");
-                System.out.println("1.Create Account  \n2.Provide ATM card  \n3.Exit");  
+                System.out.println("1.Create Account  \n2.Provide Card  \n3.Exit");  
                 System.out.println("=====================================");
                 System.out.println("Enter the option");
                 int option = scan.nextInt();
                 switch (option) 
                 {
-                    case 1: scan.nextLine();createAccount();break;
-                    case 2: provideATMCard();break;
-                    case 3: return;
+                    case 1  : scan.nextLine();createAccount();break;
+                    case 2  : provideDebitCard();break;
+                    case 3  : return;
                     default : System.out.println("Enter the correct option");
                 }
             }
@@ -39,39 +40,28 @@ public class ManageAccountView
             }
         }
     }
-    private void provideATMCard() 
+    private void provideDebitCard() 
     {
        System.out.println("Enter the Account no ");
        Long accountNumber = scan.nextLong();
-       accountModelView.validAccount(accountNumber);
+       accountViewModel.validAccount(accountNumber);
     }    
     private void createAccount() 
     {
-        System.out.println("Enter the name ");
-        String name = scan.nextLine();
-        System.out.println("Enter the phoneNo "); 
-        Long phoneNo = scan.nextLong();
-        accountModelView.validCustomer(name,phoneNo);
+        new CustomerView().addCustomer();
     }
     public void createAccount(Customer customer) 
     {
         System.out.println("Enter the balance USD ");
         double amount = scan.nextDouble();
-        accountModelView.validAmount(customer,amount);
+        accountViewModel.validAmount(customer,amount);
     }
-    public void createAccount(Customer customer, double amount) 
+    public void detailsAccount(Account account) 
     {
-        Account account = new Account(customer, amount);
-        BankDataLayer bank =  BankDataLayer.getBankDataLayer();
-        bank.setCustomer(customer);
-        bank.setAccountDetails(account);
         System.out.println( "Your Account Number is "+  account.getAccountNumber()); 
     }
-    public void provideATMCard(AtmCard card,Account account) 
+    public void provideDebitCard(DebitCard card) 
     {
-        BankDataLayer bank =  BankDataLayer.getBankDataLayer();
-        bank.setAtmCard(card);
-        bank.setAccountAtmCard(account, card);
-        System.out.println("Your Atm card No : " + card.getCardNumber());
+        System.out.println("Your Debit card No : " + card.getCardNumber());
     }
 }

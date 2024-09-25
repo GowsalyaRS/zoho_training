@@ -1,8 +1,7 @@
-package com.atmservice.module;
-interface AccountProcess
+package com.atmservice.service;
+public interface AccountProcess 
 {
     double showBalance();
     void withdraw(double amount);
     void deposit(double amount);
-    void swipe(double amount); 
 }

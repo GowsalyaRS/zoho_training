@@ -1,18 +1,19 @@
 package com.atmservice.datalayer;
 import com.atmservice.module.Account;
-import com.atmservice.module.AtmCard;
 import com.atmservice.module.Bank;
 import com.atmservice.module.Customer;
+import com.atmservice.module.DebitCard;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 public class BankDataLayer 
 {
     private Bank bank;
     private static BankDataLayer bankDataLayer;
-    private Map <Long,AtmCard> atmCards = new HashMap(); 
+    private Map <Long,DebitCard> depitCards = new HashMap(); 
     private Map <Long,Account> accounts = new HashMap();
-    private Map <Account,AtmCard> accountAtmCards= new HashMap();
+    private Map <Account,DebitCard> accountCards= new HashMap();
     private Map <Long,Customer> customers= new LinkedHashMap<>();
     private BankDataLayer()
     {   
@@ -28,8 +29,8 @@ public class BankDataLayer
     public static BankDataLayer getBankDataLayer() {
         return bankDataLayer;
     }
-    public Map<Long, AtmCard> getAtmCard() {
-        return atmCards;
+    public Map<Long,DebitCard> getDepitCard() {
+        return depitCards;
     }
     public Map<Long, Account> getAccount() {
         return accounts;
@@ -37,13 +38,13 @@ public class BankDataLayer
     public Map<Long, Customer> getCustomer() {
         return customers;
     }
-    public Map <Account,AtmCard> getAccountAtmCard()
+    public Map <Account,DebitCard> getAccountCard()
     {
-        return accountAtmCards;
+        return accountCards;
     }
-    public void setAccountAtmCard(Account account,AtmCard atmCard)
+    public void setAccountDebitCard(Account account,DebitCard depitCard)
     {
-        accountAtmCards.put(account,atmCard);
+        accountCards.put(account,depitCard);
     }
     public void setCustomer(Customer customer)
     {
@@ -53,9 +54,9 @@ public class BankDataLayer
     {
         accounts.put(account.getAccountNumber(),account);
     }
-    public void setAtmCard(AtmCard atmCard)
+    public void setDebitCard(DebitCard debitCard)
     {
-       atmCards.put(atmCard.getCardNumber(),atmCard);
+       depitCards.put(debitCard.getCardNumber(),debitCard);
     }
     public  void setBankProperty(Bank bank)
     {

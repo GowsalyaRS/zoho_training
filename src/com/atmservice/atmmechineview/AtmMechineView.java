@@ -1,43 +1,45 @@
 package com.atmservice.atmmechineview;
 import java.util.Scanner;
+import com.atmservice.card.CardView;
 import com.atmservice.login.LoginView;
-import com.atmservice.module.AtmCard;
+import com.atmservice.module.Card;
 import java.util.InputMismatchException;
+
 public class AtmMechineView 
 {
-    private AtmMechineModelView atmMechineModelView;
+    private AtmMechineViewModel atmMechineViewModel;
     private Scanner scan;
     public AtmMechineView()
     {
-       atmMechineModelView = new AtmMechineModelView(this);
+       atmMechineViewModel = new AtmMechineViewModel(this);
        scan = new Scanner(System.in);
     }
     public void validCard()
     {
-        System.out.println("Enter the card No ");
-        Long cardNumber = scan.nextLong();
-        atmMechineModelView.checkCardValidation(cardNumber);
+        System.out.println("Enter the card No "); 
+        long cardNumber = scan.nextLong();
+        atmMechineViewModel.checkCardValidation(cardNumber);
     }
-    public void init(AtmCard atmCard) 
+    public void init(CardView cardView,Card card) 
     {
-        LoginView.alert("\t\tWelcome " + atmCard.getCardName());
-        while(true )
+        LoginView.alert("\t\tWelcome " + card.getCardName());
+        while(true)
         {
             try
             {
                 System.out.println("=========================================");
-                System.out.println("1.CheckBalnce  \n2.Deposite    \n3.Withdraw  \n4.Swipe   \n5.Change PIN    \n6.Exit");
+                System.out.println("1.CheckBalance  \n2.Deposite    \n3.Withdraw  \n4.Swipe   \n5.Change PIN    \n6.Exit");
                 System.out.println("=========================================");
                 System.out.println("Enter the option ");
                 int option  = scan.nextInt();
                 switch (option) 
                 {
-                    case 1: showBalance(atmCard);break;
-                    case 2: deposit(atmCard);break;
-                    case 3: withdraw(atmCard);break;
-                    case 4: swipe(atmCard);break;
-                    case 5: changePin(atmCard);
-                    case 6:return;
+                    case 1: cardView.displayBalance();break;
+                    case 2: cardView.deposit();break;
+                    case 3: cardView.withdraw();break;
+                    case 4: cardView.swipe();break;
+                    case 5: changePin(card); break;
+                    case 6: return;
                     default: System.out.println("Enter the correct option");
                 }
             }
@@ -48,62 +50,22 @@ public class AtmMechineView
             }
         }
     }
-    private void changePin(AtmCard atmCard) 
+    private void changePin(Card card) 
     {
         System.out.println("Enter the phoneNo ");
         long phoneNo = scan.nextLong();
-        atmMechineModelView.validPhoneNumber(phoneNo,atmCard);
+        atmMechineViewModel.validPhoneNumber(phoneNo,card);
     }
-    private void showBalance(AtmCard atmCard) 
-    {
-        System.out.println(" Your Current Balance :  USD "   + atmCard.showBalance()) ;
-    }
-    private void swipe(AtmCard atmCard) 
-    {
-        double amount = getAmount();
-        atmMechineModelView.isSwipe(amount,atmCard);
-    }
-    private void withdraw(AtmCard atmCard) 
-    {
-        double amount = getAmount();
-        atmMechineModelView.isWithdraw(amount,atmCard);
-    }
-    private void deposit(AtmCard atmCard) 
-    {
-        double amount = getAmount();
-        atmMechineModelView.isDeposite(amount,atmCard);
-    }
-    private double getAmount() 
-    {
-        System.err.println("Enter the amount ");
-        double amount = scan.nextDouble();
-        return amount;
-    }
-    public void generatePin(AtmCard atmCard) 
+    public void generatePin(Card card) 
     {
        System.out.println("Enter the pin number ");
        int pinNumber = scan.nextInt();
-       atmMechineModelView.isValidPin(atmCard,pinNumber);
+       atmMechineViewModel.isValidPin(card,pinNumber);
     }
-    public void getPinNumber(AtmCard atmCard) 
+    public void getPinNumber(Card card) 
     {
         System.out.println("Enter the pin number ");
         int pinNumber = scan.nextInt();
-        atmMechineModelView.isValidPin(pinNumber,atmCard);
-    }
-    public void deposit(AtmCard atmCard, double amount) 
-    {
-        atmCard.deposit(amount);
-        System.out.println("Deposit Successfully  USD  " + amount);
-    }
-    public void withdraw(double amount, AtmCard atmCard,double withdrawCharge) 
-    {
-        atmCard.withdraw(amount);
-        System.out.println("Withdraw amount Successfully  USD  " + (amount-withdrawCharge) + "\n get amount charge  USD " + withdrawCharge );
-    }
-    public void swipe(double amount, AtmCard atmCard, double cashBack) 
-    {
-        atmCard.swipe(amount,cashBack);
-        System.out.println("Your CashBack Amount USD : " + cashBack);
+        atmMechineViewModel.isValidPin(pinNumber,card);
     }
 }

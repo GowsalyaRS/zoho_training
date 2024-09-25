@@ -2,9 +2,9 @@ import com.atmservice.atmmechineview.AtmMechineView;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Bank;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 public class App {
     public static void main(String[] args) 
     {
@@ -24,9 +24,9 @@ public class App {
                 int option = scan.nextInt();
                 switch (option) 
                 {
-                    case 1:  new LoginView().init();break;
-                    case 2:  new AtmMechineView().validCard();break;
-                    case 3:  System.exit(0);
+                    case 1 :  new LoginView().init();break;
+                    case 2 :  new AtmMechineView().validCard();break;
+                    case 3 :  System.exit(0);
                     default : System.out.println("Enter the correct option");
                 }
             }

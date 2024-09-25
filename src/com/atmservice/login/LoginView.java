@@ -1,5 +1,6 @@
 package com.atmservice.login;
 import java.util.Scanner;
+import com.atmservice.customer.CustomerView;
 import com.atmservice.manageaccount.ManageAccountView;
 public class LoginView 
 {
@@ -19,7 +20,7 @@ public class LoginView
     }
     public void onSuccess() 
     {
-       alert(" Successfully Login !");
+        alert(" Successfully Login !");
         new ManageAccountView().init();
     }
     public static void alert(String str) 

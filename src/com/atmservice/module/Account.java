@@ -1,5 +1,5 @@
 package com.atmservice.module;
-public class Account implements AccountProcess
+public class Account 
 {
     private static long accountNo= 23418920101L;
     private Customer customer;
@@ -19,30 +19,11 @@ public class Account implements AccountProcess
     public double getBalance() {
         return balance;
     }
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-    @Override
-    public double showBalance() {
-        return balance; 
-    }
-    @Override
-    public void deposit(double balance){
-         this.balance+=balance;
-    }
-    @Override
-    public void withdraw(double amount) 
+    public void setBalance(double balance) 
     {
-        balance-=amount;
-    }
-    @Override
-    public void swipe(double amount) 
-    {
-        balance=(balance-amount);
-    }
-    public void swipe (double amount,double cashBack)
-    {
-       swipe(amount);
-       balance+=cashBack;
+        if(balance>0)
+        {
+           this.balance = Double.parseDouble(String.format("%.2f",balance));
+        }
     }
 }
