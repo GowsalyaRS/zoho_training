@@ -1,6 +1,6 @@
 package com.solidprinciple.liskov_substitution.good;
 
-public  abstract class Bike 
+public interface Drivable 
 {
-   abstract void drive();
+    void drive(); 
 }

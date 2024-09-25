@@ -3,7 +3,10 @@ public class BadOperationDemo
 {
     public static void main(String[] args) 
     {
-        Bike bike = new ElectricBike();
-        bike.drive();   
+        Vehicle boat = new Boat();
+        boat.drive(); 
+        
+        Car car = new Car();
+        car.drive();
     }
 }
