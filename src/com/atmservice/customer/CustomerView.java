@@ -1,8 +1,5 @@
 package com.atmservice.customer;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.atmservice.login.LoginView;
 import com.atmservice.module.Customer;
 
 public class CustomerView 
@@ -29,23 +26,12 @@ public class CustomerView
         {
             System.out.println("Enter the Phone number");
             phoneNo  = scan.nextLong();
-            if(isValidPhoneNumber(phoneNo))
+            if(ValidInput.isValidPhoneNumber(phoneNo))
             {
                flag = false;
             }
         }
         return phoneNo;
-    }
-    private boolean isValidPhoneNumber(long phoneNo) 
-    {
-        Pattern ptrn = Pattern.compile("[6-9][0-9]{9}");
-        Matcher  matcher  = ptrn.matcher(""+phoneNo);
-        if(!matcher.matches())
-        {
-            LoginView.alert("Phone number is Invalid");
-            return false;
-        }
-        return true;
     }
     private String getName() 
     {
@@ -55,23 +41,11 @@ public class CustomerView
         {
             System.out.println("Enter the name");
             name = scan.nextLine();
-            if(isValidName(name))
+            if(ValidInput.isValidName(name))
             {
                flag = false;
             }
         }
         return name;
     }
-    public boolean isValidName(String name)
-    {
-        Pattern ptrn = Pattern.compile("[A-Z]*[a-z]+");
-        Matcher  matcher  = ptrn.matcher(name);
-        if(!matcher.matches())
-        {
-            LoginView.alert(" Name is Invalid");
-            return false;
-        }
-        return true;
-    }
-
 }

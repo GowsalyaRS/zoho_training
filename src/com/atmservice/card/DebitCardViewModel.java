@@ -33,10 +33,11 @@ public class DebitCardViewModel
     {
         card.setBalance(card.getBalance()+cashback); 
     }
-    public boolean isVaidAmount(double amount, Card card,double calculatedCharge) 
+    public boolean isVaidAmount(double amount, Card card) 
     {
         if(amount%5!=0) 
         {
+            LoginView.alert("Amount must be multiple of USD 5");
             return false;
         }
         if(card.getBalance()<amount) 

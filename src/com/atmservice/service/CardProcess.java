@@ -1,5 +1,5 @@
 package com.atmservice.service;
-public interface CardProcess
+public interface CardProcess extends AccountProcess
 {
-    void swipe(double amount); 
+    void swipe(); 
 }

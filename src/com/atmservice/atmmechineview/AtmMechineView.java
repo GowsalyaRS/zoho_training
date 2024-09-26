@@ -1,6 +1,6 @@
 package com.atmservice.atmmechineview;
 import java.util.Scanner;
-import com.atmservice.card.CardView;
+import com.atmservice.card.CardService;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Card;
 import java.util.InputMismatchException;
@@ -20,7 +20,7 @@ public class AtmMechineView
         long cardNumber = scan.nextLong();
         atmMechineViewModel.checkCardValidation(cardNumber);
     }
-    public void init(CardView cardView,Card card) 
+    public void init(CardService cardService,Card card) 
     {
         LoginView.alert("\t\tWelcome " + card.getCardName());
         while(true)
@@ -34,10 +34,10 @@ public class AtmMechineView
                 int option  = scan.nextInt();
                 switch (option) 
                 {
-                    case 1: cardView.displayBalance();break;
-                    case 2: cardView.deposit();break;
-                    case 3: cardView.withdraw();break;
-                    case 4: cardView.swipe();break;
+                    case 1: System.out.println (" Your current Balance : "+ cardService.showBalance());break;
+                    case 2: cardService.deposit();break;
+                    case 3: cardService.withdraw();break;
+                    case 4: cardService.swipe();break;
                     case 5: changePin(card); break;
                     case 6: return;
                     default: System.out.println("Enter the correct option");

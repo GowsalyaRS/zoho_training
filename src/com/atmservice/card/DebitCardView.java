@@ -25,7 +25,7 @@ public class DebitCardView  extends CardView
     {
         double amount = isValidAmount();
         double calculatedCharge = debitCardViewModel.calculatedCharge(amount);
-        if(debitCardViewModel.isVaidAmount(amount,card,calculatedCharge))
+        if(debitCardViewModel.isVaidAmount(amount,card))
         {
             withdraw(amount+calculatedCharge);
             System.out.println("Your  debited  charge   :  " + calculatedCharge );
