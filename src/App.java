@@ -1,18 +1,21 @@
 import com.atmservice.atmmechineview.AtmMechineView;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.Reader;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Bank;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class App {
-    public static void main(String[] args) 
+public class App 
+{
+    public static void main(String[] args)  throws Throwable
     {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter the Bank Name : ");
         String bankName = scan.nextLine();
         BankDataLayer.getInstance().setBankProperty(new Bank(bankName));
         System.out.println("\t\tWelcome "+ bankName + " Bank ");
+        setPerperty();
         while(true)
         { 
             try
@@ -36,5 +39,13 @@ public class App {
                 scan.nextLine();
             }
         }
+    }
+    private static void setPerperty() throws Exception 
+    {
+        BankDataLayer bank = BankDataLayer.getBankDataLayer();
+        bank.setCustomer(Reader.readCustomerFile());  
+        bank.setAccount(Reader.readAccountFile()); 
+        bank.setDebitCard(Reader.readCardFile());
+        bank.setTransaction(Reader.readTransactionFile());   
     }
 }

@@ -12,7 +12,7 @@ public class CustomerViewModel
     {
         this.customerView = customerView;
     }
-    public void isAvailableCustomer(Customer customer) 
+    public void isAvailableCustomer(Customer customer) throws Exception 
     {
         Map <Long,Customer> customers = BankDataLayer.getBankDataLayer().getCustomer();
         if(customers.get(customer.getPhoneNo())!=null)

@@ -1,6 +1,5 @@
 package com.atmservice.login;
 import java.util.Scanner;
-import com.atmservice.customer.CustomerView;
 import com.atmservice.manageaccount.ManageAccountView;
 public class LoginView 
 {
@@ -10,7 +9,7 @@ public class LoginView
     {
 		loginModel = new LoginModelView(this);
 	}
-    public void init() 
+    public void init() throws Throwable 
     {
         System.out.println("Enter the username ");
         String username = scan.nextLine();
@@ -18,7 +17,7 @@ public class LoginView
         String password = scan.nextLine();
         loginModel.validateCheck(username,password);
     }
-    public void onSuccess() 
+    public void onSuccess() throws Throwable 
     {
         alert(" Successfully Login !");
         new ManageAccountView().init();

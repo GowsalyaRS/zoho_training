@@ -1,6 +1,7 @@
 package com.atmservice.manageaccount;
 import java.util.Map;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.Writer;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Customer;
@@ -10,13 +11,17 @@ public class ManageAccountViewModel
 {
     private ManageAccountView accountView;
     private BankDataLayer bank;
+    private  Map<Long,Account> accounts;
+    private  Map <Account,DebitCard> acountDebitCard;
     public ManageAccountViewModel(ManageAccountView accountView) 
     {
        this.accountView = accountView; 
        bank = BankDataLayer.getBankDataLayer();
     }
-   
-    public void validAmount(Customer customer,double amount) 
+    public ManageAccountViewModel()
+    {
+    }
+    public void validAmount(Customer customer,double amount) throws Exception 
     {
         if(amount<100)
         {
@@ -24,31 +29,36 @@ public class ManageAccountViewModel
             return;
         }
         Account account = new Account(customer, amount);
-        BankDataLayer bank =  BankDataLayer.getBankDataLayer();
+        Writer.writeCustomerFile(customer);
+        Writer.writeAccountFile(account);
         bank.setCustomer(customer);
         bank.setAccountDetails(account);
         accountView.detailsAccount(account);
     }
-    public void validAccount(long accountNumber) 
+    public Account validAccount(long accountNumber) 
     {
-        Map<Long,Account> accounts = bank.getAccount(); 
+        accounts = bank.getAccount(); 
         Account account = accounts.get(accountNumber);   
         if(account==null)
         {
-            LoginView.alert("Account Number is Invalid..!");
-            return;
+            return null;
         }
-        Map <Account,DebitCard> acountDebitCard = bank.getAccountCard();
+        return account;
+    }
+    public void addAccountDetails(Account account) throws Exception
+    {
+        acountDebitCard = bank.getAccountCard();
         if (acountDebitCard.get(account)==null)
         {
             DebitCard depitCard = new DebitCard(account);
             bank.setDebitCard(depitCard);
             bank.setAccountDebitCard(account, depitCard);
             accountView.provideDebitCard(depitCard);
+            Writer.writeCardFile(depitCard);
         }
         else
         {
-            LoginView.alert("Already allocate ATM card");
+            LoginView.alert("Already allocate Debit card");
         }
     }
 }

@@ -11,7 +11,7 @@ public class CustomerView
         customerViewModel = new CustomerViewModel(this);
         scan = new Scanner(System.in);
     }
-    public void addCustomer() 
+    public void addCustomer() throws Exception 
     {
         String name = getName(); 
         long phoneNo = getPhoneNumber();

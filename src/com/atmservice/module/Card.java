@@ -3,13 +3,19 @@ public class Card
 {
     private final long cardNumber;
     private String cardName;
-    private int pinNumber;
     private Account account;
+    private int pinNumber;
     public Card(long cardNumber,Account account) 
     {
         this.cardNumber = cardNumber;
         this.account = account;
         cardName = account.getCustomer().getName();
+    }
+    public Card (long cardNumber,Account account, int pinNumber)
+    {
+        this.cardNumber = cardNumber;
+        this.account = account;
+        this.pinNumber = pinNumber;
     }
     public String getCardName()
     {
@@ -22,6 +28,10 @@ public class Card
     public int getPinNumber() 
     {
         return pinNumber;
+    }
+    public long getAccountNo()
+    {
+       return account.getAccountNumber();
     }
     public long getPhoneNumber()
     {

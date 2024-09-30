@@ -14,7 +14,7 @@ public class AtmMechineView
        atmMechineViewModel = new AtmMechineViewModel(this);
        scan = new Scanner(System.in);
     }
-    public void validCard()
+    public void validCard() throws Exception
     {
         System.out.println("Enter the card No "); 
         long cardNumber = scan.nextLong();

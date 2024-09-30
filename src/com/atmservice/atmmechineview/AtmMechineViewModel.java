@@ -3,6 +3,7 @@ import java.util.Map;
 import com.atmservice.card.CardService;
 import com.atmservice.card.DebitCardView;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.Writer;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Card;
 import com.atmservice.module.DebitCard;
@@ -10,14 +11,14 @@ import com.atmservice.module.DebitCard;
 public class AtmMechineViewModel
 {
    private AtmMechineView atmMechineView;
+   BankDataLayer bank = BankDataLayer.getBankDataLayer();
    AtmMechineViewModel(AtmMechineView atmMechineView) 
    {
       this.atmMechineView = atmMechineView;
    }
-   public void checkCardValidation(long cardNumber) 
+   public void checkCardValidation(long cardNumber) throws Exception 
    {
-      BankDataLayer bank = BankDataLayer.getBankDataLayer();
-      Map <Long,DebitCard> debitCards = bank.getDepitCard();
+      Map <Long,Card> debitCards = bank.getDepitCard();
       Card debitCard = debitCards.get(cardNumber);
       if(debitCard==null)
       {
@@ -35,7 +36,7 @@ public class AtmMechineViewModel
       } 
       atmMechineView.getPinNumber(debitCard);
    }
-   private void setCardPin(Card debitCard) 
+   private void setCardPin(Card debitCard) throws Exception 
    {
        int count =0;
        while(count<3)
@@ -67,6 +68,13 @@ public class AtmMechineViewModel
       if((String.valueOf(pinNumber)).length()==4) 
       {
          card.setPinNumber(pinNumber);
+         try
+         {
+           Writer.modifyCardFile(BankDataLayer.getBankDataLayer().getDepitCard());
+         }
+         catch (Exception e)
+         {
+         }
          LoginView.alert("Pin Generated Successfully");
       } 
       else
