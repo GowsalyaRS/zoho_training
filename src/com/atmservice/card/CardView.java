@@ -1,5 +1,4 @@
 package com.atmservice.card;
-import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.filedatabase.Writer;
 import com.atmservice.module.Card;
 import com.atmservice.module.Transaction;

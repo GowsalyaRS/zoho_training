@@ -22,6 +22,7 @@ public class AtmMechineView
     }
     public void init(CardService cardService,Card card) 
     {
+        
         LoginView.alert("\t\tWelcome " + card.getCardName());
         while(true)
         {

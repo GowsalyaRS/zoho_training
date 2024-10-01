@@ -16,6 +16,7 @@ public class Card
         this.cardNumber = cardNumber;
         this.account = account;
         this.pinNumber = pinNumber;
+        cardName = account.getCustomer().getName();
     }
     public String getCardName()
     {

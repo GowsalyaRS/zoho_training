@@ -6,7 +6,6 @@ import com.atmservice.module.Card;
 import com.atmservice.module.Customer;
 import com.atmservice.module.DebitCard;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import com.atmservice.module.Transaction;
@@ -115,8 +114,7 @@ public class BankDataLayer
             long accountNo =0;
             Account accounts =null;
             for(Account account : accountFile)
-            {
-                
+            { 
                 accounts = account;
                 setAccountDetails(account);
                 accountNo = account.getAccountNumber();

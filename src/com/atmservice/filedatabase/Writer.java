@@ -7,7 +7,6 @@ import java.util.Map;
 import com.atmservice.module.Account;
 import com.atmservice.module.Card;
 import com.atmservice.module.Customer;
-import com.atmservice.module.DebitCard;
 import com.atmservice.module.Transaction;
 
 public class Writer 
@@ -18,10 +17,10 @@ public class Writer
    private static String cardFile;
    static
    {
-    customerFile = "/Users/mdu-incapx2/gowsalya/atmservice/src/com/atmservice/filedatabase/customer.txt";
-    accountFile = "/Users/mdu-incapx2/gowsalya/atmservice/src/com/atmservice/filedatabase/account.txt";
-    transactionFile = "/Users/mdu-incapx2/gowsalya/atmservice/src/com/atmservice/filedatabase/transaction.txt";
-    cardFile = "/Users/mdu-incapx2/gowsalya/atmservice/src/com/atmservice/filedatabase/card.txt";
+    customerFile = "src/com/atmservice/filedatabase/customer.txt";
+    accountFile = "src/com/atmservice/filedatabase/account.txt";
+    transactionFile = "src/com/atmservice/filedatabase/transaction.txt";
+    cardFile = "src/com/atmservice/filedatabase/card.txt";
    }
    public static void printMsg()
     {
