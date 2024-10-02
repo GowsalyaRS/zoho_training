@@ -1,5 +1,4 @@
 package com.atmservice.customer;
-import java.util.Map;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
 import com.atmservice.manageaccount.ManageAccountView;
@@ -12,10 +11,9 @@ public class CustomerViewModel
     {
         this.customerView = customerView;
     }
-    public void isAvailableCustomer(Customer customer) throws Exception 
+    public void isAvailableCustomer(Customer customer) 
     {
-        Map <Long,Customer> customers = BankDataLayer.getBankDataLayer().getCustomer();
-        if(customers.get(customer.getPhoneNo())!=null)
+        if(BankDataLayer.getBankDataLayer().getCustomer().get(customer.getPhoneNo())!=null)
         {
            LoginView.alert("Already your create the account");
         }

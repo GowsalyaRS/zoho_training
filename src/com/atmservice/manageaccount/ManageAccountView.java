@@ -6,6 +6,7 @@ import com.atmservice.module.Customer;
 import com.atmservice.module.DebitCard;
 import java.util.InputMismatchException;
 import com.atmservice.transaction.TransactionView;
+
 public class ManageAccountView 
 {
     private ManageAccountViewModel accountViewModel;
@@ -15,7 +16,7 @@ public class ManageAccountView
         scan = new Scanner(System.in);
         accountViewModel= new ManageAccountViewModel(this);
     }
-    public void init() throws Throwable 
+    public void init() 
     {
         while(true)
         {
@@ -41,11 +42,11 @@ public class ManageAccountView
             }
         }
     }
-    private void createAccount() throws Throwable 
+    private void createAccount() 
     {
         new CustomerView().addCustomer();
     }
-    public void createAccount(Customer customer) throws Exception 
+    public void createAccount(Customer customer) 
     {
         System.out.println("Enter the balance USD ");
         double amount = scan.nextDouble();
@@ -64,7 +65,7 @@ public class ManageAccountView
     }  
     public void provideDebitCard()
     {
-        Account account =  findAccount();
+        Account account = findAccount();
         try
         {
            provideDebitCard(account);

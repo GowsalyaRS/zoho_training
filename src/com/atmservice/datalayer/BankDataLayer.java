@@ -1,4 +1,5 @@
 package com.atmservice.datalayer;
+import com.atmservice.filedatabase.Reader;
 import com.atmservice.filedatabase.Writer;
 import com.atmservice.module.Account;
 import com.atmservice.module.Bank;
@@ -6,20 +7,20 @@ import com.atmservice.module.Card;
 import com.atmservice.module.Customer;
 import com.atmservice.module.DebitCard;
 import java.util.Map;
-import java.util.LinkedHashMap;
 import java.util.List;
 import com.atmservice.module.Transaction;
 import java.util.ArrayList; 
+import java.util.HashMap;
 
 public class BankDataLayer 
 {
     private Bank bank;
     private static BankDataLayer bankDataLayer;
-    private Map <Long,Card> depitCards = new LinkedHashMap(); 
-    private Map <Long,Account> accounts = new LinkedHashMap();
-    private Map <Account,DebitCard> accountCards= new LinkedHashMap();
-    private Map <Long,Customer> customers= new LinkedHashMap<>();
-    private Map <Account,ArrayList<Transaction>> transactionHistory = new LinkedHashMap();
+    private Map <Long,Card> depitCards = new HashMap(); 
+    private Map <Long,Account> accounts = new HashMap();
+    private Map <Account,DebitCard> accountCards= new HashMap();
+    private Map <Long,Customer> customers= new HashMap<>();
+    private Map <Account,ArrayList<Transaction>> transactionHistory = new HashMap();
     private BankDataLayer()
     {   
     }
@@ -58,6 +59,13 @@ public class BankDataLayer
     public void setAccountDebitCard(Account account,DebitCard depitCard)
     {
         accountCards.put(account,depitCard);
+        try
+        {
+          Writer.writeCardFile(depitCard);
+        }
+        catch(Exception e)
+        {
+        }
     }
     public void setCustomer(Customer customer)
     {
@@ -71,18 +79,35 @@ public class BankDataLayer
     {
        depitCards.put(debitCard.getCardNumber(),debitCard);
     }
+    public void setTransaction(Transaction transaction)
+    {
+       Account account =  accounts.get(transaction.getAccountNo());
+       if(transactionHistory.get(account)==null)
+       {
+          ArrayList <Transaction> trans =new ArrayList<>();
+          trans.add(transaction);
+          transactionHistory.put(account,trans);
+       }
+       else
+       {
+          transactionHistory.get(account).add(transaction);
+       }
+    }
     public  void setBankProperty(Bank bank)
     {
        this.bank = bank;
     }
-    public void setTransactionHostory(Account account,Transaction transaction)
+    public  void setPerperty() throws Exception 
+    {
+        BankDataLayer bank = BankDataLayer.getBankDataLayer();
+        bank.setCustomer(Reader.readCustomerFile());  
+        bank.setAccount(Reader.readAccountFile()); 
+        bank.setDebitCard(Reader.readCardFile());
+        bank.setTransaction(Reader.readTransactionFile());   
+    }
+    public void setTransactionHistory(Account account,Transaction transaction)
     {
         ArrayList <Transaction> transactions = transactionHistory.get(account);
-        double balance = transaction.getCurrentBalance();
-        if(account!=null)
-        {
-           account.setBalance(balance);
-        }
         if(transactions==null)
         {
             transactions = new ArrayList();
@@ -91,6 +116,7 @@ public class BankDataLayer
         transactions.add(transaction);
         try
         {
+           Writer.writeTransactionFile(transaction);
            Writer.modifyAccountFile(getAccount());
         }
         catch(Exception e)
@@ -109,47 +135,84 @@ public class BankDataLayer
     }
     public void setAccount(List<Account> accountFile) 
     {
-       if(accountFile.size()>0)  
-       {
-            long accountNo =0;
-            Account accounts =null;
+        if(accountFile.size()>0)  
+        {
+            long accountNo =Account.getAccountNo();
             for(Account account : accountFile)
             { 
-                accounts = account;
                 setAccountDetails(account);
-                accountNo = account.getAccountNumber();
+                accountNo+=1;
             }
-            accounts.setAccountNumber(accountNo);
-       }
+            Account.setAccountNo(accountNo);
+        }
     }
     public void setTransaction(List<Transaction> transactionFile) 
     {
         if(transactionFile.size()>0)
         {
-            long transactionNo =0;
-            Transaction  transactions = null;
+            long transactionNo =Transaction.getTransactionCount();
             for(Transaction transaction : transactionFile)
             {
-                setTransactionHostory(accounts.get(transaction.getAccountNo()),transaction);
-                transactions = transaction;
-                transactionNo = transactions.getTransactionNo();
+                setTransaction(transaction);
+                transactionNo+=1;
             }
-            transactions.setTranactionNumber(transactionNo);
+            Transaction.setTransactionCount(transactionNo);
         }
     }
     public void setDebitCard(List<Card> cardFile) 
     {
         if(cardFile.size()>0)  
         {
-            long cardNo =0;
+            long cardNo = DebitCard.getCardNo();
             DebitCard card = null;
             for(Card cards: cardFile)
             {
                 card = (DebitCard)cards;
                 setDebitCard(card);
-                cardNo = card.getCardNumber();
+                cardNo+=1;
             }
-            card.setCardNumber(cardNo);
+            DebitCard.setCardNo(cardNo);
+        }
+    }
+    public void writeAccountFile(Account account) 
+    {
+        setCustomer(account.getCustomer());
+        setAccountDetails(account);   
+        try
+        {
+            Writer.writeCustomerFile(account.getCustomer());
+            Writer.writeAccountFile(account);
+        }
+        catch (Exception e)
+        {
+          e.printStackTrace();
+        }
+    }
+    public Card getDepitCard(long cardNumber) 
+    {
+        return depitCards.get(cardNumber); 
+    }
+    public void modifyCardFile() 
+    {
+        try
+        {
+          Writer.modifyCardFile(BankDataLayer.getBankDataLayer().getDepitCard());
+        }
+        catch (Exception e)
+        {
+            Writer.printMsg();
+        }
+    }
+    public void createAccount(Account account) 
+    {
+        try
+        {
+           Writer.writeCustomerFile(account.getCustomer());
+           Writer.writeAccountFile(account);
+        }
+        catch(Exception e)
+        {
+           Writer.printMsg();
         }
     }
 }

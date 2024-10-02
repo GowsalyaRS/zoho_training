@@ -1,9 +1,7 @@
 package com.atmservice.atmmechineview;
-import java.util.Map;
 import com.atmservice.card.CardService;
 import com.atmservice.card.DebitCardView;
 import com.atmservice.datalayer.BankDataLayer;
-import com.atmservice.filedatabase.Writer;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Card;
 import com.atmservice.module.DebitCard;
@@ -18,8 +16,7 @@ public class AtmMechineViewModel
    }
    public void checkCardValidation(long cardNumber) throws Exception 
    {
-      Map <Long,Card> debitCards = bank.getDepitCard();
-      Card debitCard = debitCards.get(cardNumber);
+      Card debitCard = bank.getDepitCard(cardNumber);
       if(debitCard==null)
       {
          LoginView.alert("This card is Invalid");
@@ -29,14 +26,12 @@ public class AtmMechineViewModel
       {
          setCardPin(debitCard);
       }
-      if(debitCard.getPinNumber()==0)
+      else
       {
-            LoginView.alert("First Generated the pin ");
-            return;
-      } 
-      atmMechineView.getPinNumber(debitCard);
+        isValidPin(debitCard);
+      }
    }
-   private void setCardPin(Card debitCard) throws Exception 
+   private void setCardPin(Card debitCard) throws Exception  
    {
        int count =0;
        while(count<3)
@@ -44,7 +39,7 @@ public class AtmMechineViewModel
          count++;
          if(debitCard.getPinNumber()==0)
          {
-            atmMechineView.generatePin(debitCard);
+            atmMechineView.changePin(debitCard);
          } 
          if(debitCard.getPinNumber()!=0)
          {
@@ -52,47 +47,30 @@ public class AtmMechineViewModel
          }
       }  
    }
-   public void generatePin(Card atmCard) 
+   public void changePassword(Card card,long phoneNo)  
    {
-      if(atmCard.getPinNumber()==0)
-      {
-         atmMechineView.generatePin(atmCard);
-      }
-      else
-      {
-         LoginView.alert("Pin already Generated");
-      }
-   }
-   public void isValidPin(Card card, int pinNumber) 
-   {
+      int pinNumber = atmMechineView.generatePin();
       if((String.valueOf(pinNumber)).length()==4) 
       {
-         card.setPinNumber(pinNumber);
-         try
+         if(card.setPinNumber(pinNumber,phoneNo))
          {
-           Writer.modifyCardFile(BankDataLayer.getBankDataLayer().getDepitCard());
+            BankDataLayer.getBankDataLayer().modifyCardFile();
+            LoginView.alert("Pin Change Successfully");
          }
-         catch (Exception e)
+         else
          {
+            LoginView.alert("Your Phone Number is Invalid ");
          }
-         LoginView.alert("Pin Generated Successfully");
       } 
       else
       {
          LoginView.alert("Pin Exactly 4 digit number");
       } 
    }
-   public void validPhoneNumber(long phoneNo, Card card) 
+
+   public void isValidPin( Card card) 
    {
-      if(card.getPhoneNumber()!=phoneNo) 
-      {
-         LoginView.alert("Your phone number is invalid!");
-         return;
-      }
-      atmMechineView.generatePin(card);
-   }
-   public void isValidPin(int pinNumber, Card card) 
-   {
+      int pinNumber = atmMechineView.generatePin();
       if(pinNumber==card.getPinNumber())
       {
          findCard(card);
@@ -104,7 +82,7 @@ public class AtmMechineViewModel
    {
       if(card instanceof DebitCard)
       {
-         atmMechineView.init(new CardService (new DebitCardView(card)),card);
+         atmMechineView.init(new CardService(new DebitCardView(card).getInstance()),card);
       }
    }
 }

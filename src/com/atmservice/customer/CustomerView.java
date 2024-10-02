@@ -1,6 +1,7 @@
 package com.atmservice.customer;
 import java.util.Scanner;
 import com.atmservice.module.Customer;
+import com.atmservice.validprocess.ValidInput;
 
 public class CustomerView 
 {
@@ -11,7 +12,7 @@ public class CustomerView
         customerViewModel = new CustomerViewModel(this);
         scan = new Scanner(System.in);
     }
-    public void addCustomer() throws Exception 
+    public void addCustomer() 
     {
         String name = getName(); 
         long phoneNo = getPhoneNumber();

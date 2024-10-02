@@ -10,8 +10,10 @@ public class DebitCard extends Card
     {
         super(cardNumber,account,pinNumber);
     }
-    public void setCardNumber(long cardNo)
-    {
-       this.cardNo = cardNo;
+    public static long getCardNo() {
+        return cardNo;
+    }
+    public static void setCardNo(long cardNo) {
+        DebitCard.cardNo = cardNo;
     }
 }

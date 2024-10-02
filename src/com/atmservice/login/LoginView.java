@@ -9,7 +9,7 @@ public class LoginView
     {
 		loginModel = new LoginModelView(this);
 	}
-    public void init() throws Throwable 
+    public void init() 
     {
         System.out.println("Enter the username ");
         String username = scan.nextLine();
@@ -17,7 +17,7 @@ public class LoginView
         String password = scan.nextLine();
         loginModel.validateCheck(username,password);
     }
-    public void onSuccess() throws Throwable 
+    public void onSuccess() 
     {
         alert(" Successfully Login !");
         new ManageAccountView().init();

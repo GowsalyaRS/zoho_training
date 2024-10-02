@@ -22,10 +22,10 @@ public class Reader {
     private static String cardFile;
     static 
     {
-        customerFile = "src/com/atmservice/filedatabase/customer.txt";
-        accountFile = "src/com/atmservice/filedatabase/account.txt";
+        customerFile    = "src/com/atmservice/filedatabase/customer.txt";
+        accountFile     = "src/com/atmservice/filedatabase/account.txt";
         transactionFile = "src/com/atmservice/filedatabase/transaction.txt";
-        cardFile = "src/com/atmservice/filedatabase/card.txt";
+        cardFile        = "src/com/atmservice/filedatabase/card.txt";
     }
     public static List<Customer> readCustomerFile() throws Exception {
         List<Customer> customers = new ArrayList();
@@ -65,12 +65,15 @@ public class Reader {
                 account.add(new Account(accountNo, customer, balance));
                 n = s.readLine();
             }
-        } catch (FileNotFoundException e) {
+        } 
+        catch (FileNotFoundException e)
+        {
             Writer.printMsg();
         }
         return account;
     }
-    public static List<Card> readCardFile() throws Exception {
+    public static List<Card> readCardFile() throws Exception 
+    {
         List<Card> cards = new ArrayList();
         Map <Long,Account> accounts = BankDataLayer.getBankDataLayer().getAccount();
         try (BufferedReader s = new BufferedReader(new FileReader(cardFile))) 
@@ -88,13 +91,15 @@ public class Reader {
                 n = s.readLine();
             }
         } 
-        catch (FileNotFoundException e) {
+        catch (FileNotFoundException e) 
+        {
             e.printStackTrace();
             Writer.printMsg();
         }
         return cards;
     }
-    public static List<Transaction> readTransactionFile() throws Exception {
+    public static List<Transaction> readTransactionFile() throws Exception
+    {
         List<Transaction> transactions = new ArrayList();
         try (BufferedReader s = new BufferedReader(new FileReader(transactionFile))) 
         {

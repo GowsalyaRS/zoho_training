@@ -46,8 +46,13 @@ public class Card
     {
         account.setBalance(balance);
     }
-    public void setPinNumber(int pinNumber) 
+    public boolean setPinNumber(int pinNumber,long phoneNo) 
     {
-        this.pinNumber = pinNumber;   
+       if(this.account.getCustomer().getPhoneNo()==phoneNo)
+       {
+          this.pinNumber = pinNumber; 
+          return true;
+       } 
+       return false; 
     }
 }

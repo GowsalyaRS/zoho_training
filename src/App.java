@@ -1,6 +1,5 @@
 import com.atmservice.atmmechineview.AtmMechineView;
 import com.atmservice.datalayer.BankDataLayer;
-import com.atmservice.filedatabase.Reader;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Bank;
 import java.util.InputMismatchException;
@@ -15,7 +14,7 @@ public class App
         String bankName = scan.nextLine();
         BankDataLayer.getInstance().setBankProperty(new Bank(bankName));
         System.out.println("\t\tWelcome "+ bankName + " Bank ");
-        setPerperty();
+        BankDataLayer.getInstance().setPerperty();
         while(true)
         { 
             try
@@ -27,10 +26,10 @@ public class App
                 int option = scan.nextInt();
                 switch (option) 
                 {
-                    case 1 :  new LoginView().init();break;
-                    case 2 :  new AtmMechineView().validCard();break;
-                    case 3 :  System.exit(0);
-                    default : System.out.println("Enter the correct option");
+                    case 1  :  new LoginView().init();break;
+                    case 2  :  new AtmMechineView().validCard();break;
+                    case 3  :  System.exit(0);
+                    default :  System.out.println("Enter the correct option");
                 }
             }
             catch (InputMismatchException e)
@@ -40,12 +39,5 @@ public class App
             }
         }
     }
-    private static void setPerperty() throws Exception 
-    {
-        BankDataLayer bank = BankDataLayer.getBankDataLayer();
-        bank.setCustomer(Reader.readCustomerFile());  
-        bank.setAccount(Reader.readAccountFile()); 
-        bank.setDebitCard(Reader.readCardFile());
-        bank.setTransaction(Reader.readTransactionFile());   
-    }
+  
 }

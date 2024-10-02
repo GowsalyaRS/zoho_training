@@ -7,7 +7,7 @@ public class LoginModelView {
     {
 		this.loginView = loginView;
 	}
-    public void validateCheck(String username, String password) throws Throwable  
+    public void validateCheck(String username, String password) 
     {
        
         if(username.equals("zoho")) 
@@ -26,4 +26,5 @@ public class LoginModelView {
             loginView.alert("Username Invalid");
         }
     }
+   
 }

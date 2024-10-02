@@ -1,7 +1,6 @@
 package com.atmservice.manageaccount;
 import java.util.Map;
 import com.atmservice.datalayer.BankDataLayer;
-import com.atmservice.filedatabase.Writer;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Customer;
@@ -10,18 +9,22 @@ import com.atmservice.module.DebitCard;
 public class ManageAccountViewModel
 {
     private ManageAccountView accountView;
-    private BankDataLayer bank;
+    private static  BankDataLayer bank;
     private  Map<Long,Account> accounts;
     private  Map <Account,DebitCard> acountDebitCard;
+    static
+    {
+        bank = BankDataLayer.getBankDataLayer();
+    }
     public ManageAccountViewModel(ManageAccountView accountView) 
     {
        this.accountView = accountView; 
-       bank = BankDataLayer.getBankDataLayer();
+       
     }
     public ManageAccountViewModel()
     {
     }
-    public void validAmount(Customer customer,double amount) throws Exception 
+    public void validAmount(Customer customer,double amount) 
     {
         if(amount<100)
         {
@@ -29,11 +32,8 @@ public class ManageAccountViewModel
             return;
         }
         Account account = new Account(customer, amount);
-        Writer.writeCustomerFile(customer);
-        Writer.writeAccountFile(account);
-        bank.setCustomer(customer);
-        bank.setAccountDetails(account);
-        accountView.detailsAccount(account);
+        bank.writeAccountFile(account);
+        accountView.detailsAccount(account);  
     }
     public Account validAccount(long accountNumber) 
     {
@@ -54,7 +54,6 @@ public class ManageAccountViewModel
             bank.setDebitCard(depitCard);
             bank.setAccountDebitCard(account, depitCard);
             accountView.provideDebitCard(depitCard);
-            Writer.writeCardFile(depitCard);
         }
         else
         {

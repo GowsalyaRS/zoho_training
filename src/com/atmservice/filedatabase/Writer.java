@@ -15,14 +15,14 @@ public class Writer
    private static String accountFile;
    private static String transactionFile;
    private static String cardFile;
-   static
-   {
-    customerFile = "src/com/atmservice/filedatabase/customer.txt";
-    accountFile = "src/com/atmservice/filedatabase/account.txt";
-    transactionFile = "src/com/atmservice/filedatabase/transaction.txt";
-    cardFile = "src/com/atmservice/filedatabase/card.txt";
-   }
-   public static void printMsg()
+    static
+    {
+        customerFile    = "src/com/atmservice/filedatabase/customer.txt";
+        accountFile     = "src/com/atmservice/filedatabase/account.txt";
+        transactionFile = "src/com/atmservice/filedatabase/transaction.txt";
+        cardFile        = "src/com/atmservice/filedatabase/card.txt";
+    }
+    public static void printMsg()
     {
         System.out.println("File is not fund");
     }

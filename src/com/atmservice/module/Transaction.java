@@ -13,7 +13,8 @@ public class Transaction
     private LocalDate date;
     private Time time;
     private double charge;
-    public Transaction(long accountNo, TransferType transferType,double amount,double currentBalance)
+
+    public Transaction(long accountNo, TransferType transferType, double amount, double currentBalance) 
     {
         transactionNo = ++transactionCount;
         this.accountNo = accountNo;
@@ -23,17 +24,23 @@ public class Transaction
         time = Time .valueOf(LocalTime.now());
         this.currentBalance = currentBalance;
     }
-    public Transaction(long accountNo, TransferType transferType, double amount, double balance, double charge) {
+    public Transaction(long accountNo, TransferType transferType, double amount, double balance, double charge) 
+    {
         this(accountNo, transferType, amount, balance);
         this.charge = charge;
     }
-    public Transaction(long transactionNo,long accountNo, TransferType transferType, double amount, double balance, double charge,LocalDate date ,Time time) 
+    public Transaction(long transactionNo,long accountNo, TransferType transferType, double amount, double currentBalance, double charge,LocalDate date ,Time time) 
     {
-        this(accountNo, transferType, amount, balance,charge);
         this.transactionNo =transactionNo;
+        this.accountNo = accountNo;
+        this.transferType = transferType;
+        this.amount=amount;
+        this.currentBalance = currentBalance;
+        this.charge = charge;
         this.date = date;
         this.time = time;
     }
+    
     public long getTransactionNo() {
         return transactionNo;
     }
@@ -64,9 +71,12 @@ public class Transaction
     {
        this.charge = charge;
     }
-    public void setTranactionNumber(long transactionCount)
+    public static long getTransactionCount() {
+        return transactionCount;
+    }
+    public static void setTransactionCount(long transactionCount) 
     {
-       this.transactionCount = transactionCount;
+         Transaction.transactionCount = transactionCount;
     }
     public String toString()
     {

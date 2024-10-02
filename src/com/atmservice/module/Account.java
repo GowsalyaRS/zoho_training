@@ -25,12 +25,9 @@ public class Account
     {
         return accountNumber;
     }
-    public double getBalance() {
-        return balance;
-    }
-    public void setAccountNumber(long accountNo)
+    public double getBalance() 
     {
-       this.accountNo = accountNo;
+        return balance;
     }
     public void setBalance(double balance) 
     {
@@ -38,5 +35,13 @@ public class Account
         {
            this.balance = Double.parseDouble(String.format("%.2f",balance));
         }
+    }
+    public static long getAccountNo() 
+    {
+        return accountNo;
+    }
+    public static void setAccountNo(long accountNo) 
+    {
+        Account.accountNo = accountNo;
     }
 }

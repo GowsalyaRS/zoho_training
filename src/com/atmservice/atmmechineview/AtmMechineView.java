@@ -21,8 +21,7 @@ public class AtmMechineView
         atmMechineViewModel.checkCardValidation(cardNumber);
     }
     public void init(CardService cardService,Card card) 
-    {
-        
+    { 
         LoginView.alert("\t\tWelcome " + card.getCardName());
         while(true)
         {
@@ -51,22 +50,17 @@ public class AtmMechineView
             }
         }
     }
-    private void changePin(Card card) 
+    public void changePin(Card card) 
     {
         System.out.println("Enter the phoneNo ");
         long phoneNo = scan.nextLong();
-        atmMechineViewModel.validPhoneNumber(phoneNo,card);
+        atmMechineViewModel.changePassword(card,phoneNo);
     }
-    public void generatePin(Card card) 
+    public int  generatePin() 
     {
        System.out.println("Enter the pin number ");
        int pinNumber = scan.nextInt();
-       atmMechineViewModel.isValidPin(card,pinNumber);
+       return pinNumber;
     }
-    public void getPinNumber(Card card) 
-    {
-        System.out.println("Enter the pin number ");
-        int pinNumber = scan.nextInt();
-        atmMechineViewModel.isValidPin(pinNumber,card);
-    }
+   
 }
