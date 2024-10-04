@@ -3,21 +3,25 @@ import java.util.Scanner;
 import com.atmservice.module.Customer;
 import com.atmservice.validprocess.ValidInput;
 
-public class CustomerView 
+public class CustomerView  implements CustomerViewProcess
 {
-    private CustomerViewModel customerViewModel;
+    private CustomerViewModelProcess customerViewModel;
     private Scanner scan ;
-    public CustomerView()
+    public CustomerView(CustomerViewModelProcess  customerViewModel)
     {
-        customerViewModel = new CustomerViewModel(this);
+        this.customerViewModel =customerViewModel;
         scan = new Scanner(System.in);
     }
-    public void addCustomer() 
+    public Customer enterCustomerData() 
     {
         String name = getName(); 
         long phoneNo = getPhoneNumber();
         Customer customer = new Customer(name,phoneNo);
-        customerViewModel.isAvailableCustomer(customer);
+        if(customerViewModel.isValidCustomer(customer)==false)
+        {
+            return customer;
+        }
+        return null;
     }
     private Long getPhoneNumber() 
     {
@@ -48,5 +52,9 @@ public class CustomerView
             }
         }
         return name;
+    }
+    public void greatingMsg(String name)
+    {
+       System.out.println("Welcome" + name + " Your eligible for acccount creation");
     }
 }

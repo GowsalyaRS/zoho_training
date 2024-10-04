@@ -1,12 +1,12 @@
 package com.atmservice.login;
 
-public class LoginModelView {
-
-    private LoginView loginView;
-	LoginModelView(LoginView loginView) 
+public class LoginViewModel  implements LoginViewModelProcess
+{
+    private LoginViewProcess loginView;
+    public void setLoginView(LoginViewProcess loginView) 
     {
-		this.loginView = loginView;
-	}
+        this.loginView = loginView;
+    }
     public void validateCheck(String username, String password) 
     {
        
@@ -18,13 +18,12 @@ public class LoginModelView {
             }
             else
             {
-                loginView.alert("Passord Invalid!");
+                LoginView.alert("Passord Invalid!");
             }
         }
         else
         {
-            loginView.alert("Username Invalid");
+            LoginView.alert("Username Invalid");
         }
     }
-   
 }

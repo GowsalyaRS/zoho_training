@@ -1,13 +1,12 @@
 package com.atmservice.card;
-import com.atmservice.module.Card;
 
-public class DebitCardView  extends CardView
+public class DebitCardView  extends CardView implements DebitCardViewProcess
 {
-    private DebitCardViewModel debitCardViewModel;
-    public DebitCardView(Card card)
+    private DebitCardViewModelProcess debitCardViewModel;
+    public DebitCardView(CardViewModelProcess  cardViewModel,DebitCardViewModelProcess debitCardViewModel)
     {
-        super(card);
-        debitCardViewModel = new  DebitCardViewModel(this,card);
+        super(cardViewModel);
+        this.debitCardViewModel = debitCardViewModel;
     } 
     public void swipeDetails(double cashback) 
     {
@@ -17,9 +16,4 @@ public class DebitCardView  extends CardView
     {
         System.out.println("Your  debited  charge   :  " + calculatedCharge );
     }
-    public DebitCardViewModel getInstance() 
-    {
-        return debitCardViewModel;
-    }
-    
 }

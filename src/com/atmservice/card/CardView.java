@@ -1,16 +1,14 @@
 package com.atmservice.card;
 import java.util.Scanner;
-import com.atmservice.module.Card;
-
-public class CardView  
+public class CardView  implements CardViewProcess
 {
-    protected CardViewModel cardViewModel;
+    protected CardViewModelProcess cardViewModel;
     private Scanner scan  = new Scanner(System.in);;
-    CardView(Card card)
+    public CardView(CardViewModelProcess cardViewModel)
     {
-        cardViewModel =  new CardViewModel(this,card);
+        this.cardViewModel = cardViewModel; 
     }
-    public double isValidAmount()
+    public double isEnterValidAmount()
     {
         boolean flag = true;
         double amount =0;
@@ -28,16 +26,16 @@ public class CardView
     public void swipeDetails(double amount)
     {
         System.out.println("Swipe amount is        : " + amount );
-        System.out.println ("Your Current Balance  : " + cardViewModel.showBalance() ); 
+        System.out.println ("Your Current Balance  : " + cardViewModel.getBalance() ); 
     }
     public void depositeView(double amount) 
     {
         System.out.println("Deposit amount is     : " + amount ); 
-        System.out.println ("Your Current Balance : " + cardViewModel.showBalance() ); 
+        System.out.println ("Your Current Balance : " + cardViewModel.getBalance() ); 
     }
     public  void withdrawDetails(double amount) 
     {
         System.out.println("Withdraw amount is    : " + amount );  
-        System.out.println ("Your Current Balance : " + cardViewModel.showBalance() ); 
+        System.out.println ("Your Current Balance : " + cardViewModel.getBalance() ); 
     }
 }

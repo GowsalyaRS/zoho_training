@@ -1,6 +1,8 @@
 import com.atmservice.atmmechineview.AtmMechineView;
+import com.atmservice.atmmechineview.AtmMechineViewModel;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
+import com.atmservice.login.LoginViewModel;
 import com.atmservice.module.Bank;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -26,8 +28,8 @@ public class App
                 int option = scan.nextInt();
                 switch (option) 
                 {
-                    case 1  :  new LoginView().init();break;
-                    case 2  :  new AtmMechineView().validCard();break;
+                    case 1  :  loginProcess();break;
+                    case 2  :  atmProcess();break;
                     case 3  :  System.exit(0);
                     default :  System.out.println("Enter the correct option");
                 }
@@ -39,5 +41,18 @@ public class App
             }
         }
     }
-  
+    private static void loginProcess() 
+    {
+       LoginViewModel loginViewModel = new LoginViewModel();
+       LoginView loginView = new LoginView(loginViewModel);
+       loginViewModel.setLoginView(loginView);
+       loginView.init();
+    }
+    public static void atmProcess() throws Exception
+    {
+        AtmMechineViewModel aMechineViewModel = new AtmMechineViewModel();
+        AtmMechineView atmMechineView = new AtmMechineView(aMechineViewModel);
+        aMechineViewModel.setAtmMechineView(atmMechineView);
+        atmMechineView.enterCardNumber();
+    }
 }

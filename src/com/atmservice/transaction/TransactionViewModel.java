@@ -1,33 +1,29 @@
 package com.atmservice.transaction;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Transaction;
-import java.util.Map;
 import java.util.ArrayList;
 
-public class TransactionViewModel
+public class TransactionViewModel implements TransactionViewModelProcess
 {
-    private TransactionView transactionView;
-    private Map <Account,ArrayList<Transaction>> transactionHistory;
-    public TransactionViewModel(TransactionView transactionView) 
+    private TransactionViewProcess transactionView;
+   
+    public void setTransactionView(TransactionViewProcess transactionView) 
     {
-        this.transactionView =transactionView;  
-        transactionHistory =  BankDataLayer.getInstance().getAccountHistory();
+        this.transactionView = transactionView;
     }
-    public TransactionViewModel()
+    public void findHistory(Account account) 
     {
-    }
-    public void getHistory(Account account) 
-    {
-        ArrayList <Transaction> transaction =  transactionHistory.get(account);
+        ArrayList <Transaction> transaction = BankDataLayer.getInstance().getAccountHistory().get(account);
         if(transaction==null)
         {
-            System.out.println("No available Transaction History");
+            LoginView.alert("No available Transaction History");
             return;
         }
         if(transaction.size()>0)
         {
-            transactionView.displayHistory(transaction);
+            transactionView.printHistory(transaction);
         }
     }
     public void setHistoryData(Transaction transaction) 
@@ -36,5 +32,5 @@ public class TransactionViewModel
         Account account = BankDataLayer.getBankDataLayer().getAccount().get(accountNo);
         BankDataLayer.getBankDataLayer().setTransactionHistory(account,transaction);
         account.setBalance(transaction.getCurrentBalance());
-    }        
+    }
 }

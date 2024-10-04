@@ -1,20 +1,18 @@
 package com.atmservice.atmmechineview;
 import java.util.Scanner;
 import com.atmservice.card.CardService;
-import com.atmservice.login.LoginView;
 import com.atmservice.module.Card;
 import java.util.InputMismatchException;
 
-public class AtmMechineView 
+public class AtmMechineView  implements AtmMechineViewProcess
 {
-    private AtmMechineViewModel atmMechineViewModel;
-    private Scanner scan;
-    public AtmMechineView()
+    private AtmMechineViewModelProcess atmMechineViewModel;
+    private  static Scanner scan = new Scanner(System.in);
+    public AtmMechineView(AtmMechineViewModelProcess atmMechineViewModel)
     {
-       atmMechineViewModel = new AtmMechineViewModel(this);
-       scan = new Scanner(System.in);
+       this.atmMechineViewModel= atmMechineViewModel;
     }
-    public void validCard() throws Exception
+    public void enterCardNumber() 
     {
         System.out.println("Enter the card No "); 
         long cardNumber = scan.nextLong();
@@ -22,7 +20,6 @@ public class AtmMechineView
     }
     public void init(CardService cardService,Card card) 
     { 
-        LoginView.alert("\t\tWelcome " + card.getCardName());
         while(true)
         {
             try
@@ -34,11 +31,11 @@ public class AtmMechineView
                 int option  = scan.nextInt();
                 switch (option) 
                 {
-                    case 1: System.out.println (" Your current Balance : "+ cardService.showBalance());break;
+                    case 1: System.out.println (" Your current Balance : " + cardService.showBalance());break;
                     case 2: cardService.deposit();break;
                     case 3: cardService.withdraw();break;
                     case 4: cardService.swipe();break;
-                    case 5: changePin(card); break;
+                    case 5: enterPhoneNumber(card); break;
                     case 6: return;
                     default: System.out.println("Enter the correct option");
                 }
@@ -50,17 +47,21 @@ public class AtmMechineView
             }
         }
     }
-    public void changePin(Card card) 
+    public void  enterPhoneNumber(Card card) 
     {
         System.out.println("Enter the phoneNo ");
         long phoneNo = scan.nextLong();
         atmMechineViewModel.changePassword(card,phoneNo);
     }
-    public int  generatePin() 
+    public int enterPinNumber() 
     {
        System.out.println("Enter the pin number ");
        int pinNumber = scan.nextInt();
        return pinNumber;
     }
-   
+    public void grettingMsg(Card card, CardService cardService) 
+    {
+        System.out.println("Welcome   " + card.getCardName()); 
+        init(cardService,card);
+    }
 }

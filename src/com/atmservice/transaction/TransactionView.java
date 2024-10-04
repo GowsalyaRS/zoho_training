@@ -4,31 +4,27 @@ import com.atmservice.manageaccount.ManageAccountView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Transaction;
 
-public class TransactionView
+public class TransactionView implements TransactionViewProcess
 {
-    private TransactionViewModel transactionViewModel;
-    public TransactionView()
+    private TransactionViewModelProcess transactionViewModel;
+    public TransactionView(TransactionViewModelProcess transactionViewModel)
     {
-        transactionViewModel = new TransactionViewModel(this);
+        this.transactionViewModel = transactionViewModel;
     }
-    public Account findAccount() 
+    public void  printAccountNumber()
     {
-        Account account = new ManageAccountView().findAccount();
-        return account;
-    }
-    public void  getHistory()
-    {
-        Account account = findAccount();
+        Account account = ManageAccountView.findAccount();
         if(account!=null)
         {
-           transactionViewModel.getHistory(account);
+            System.out.println("Your Account Number is "+ account.getAccountNumber());
+            transactionViewModel.findHistory(account);
         }
         else
         {
             System.out.println("Account Number is Invalid..!");
         }
     }
-    public void displayHistory(ArrayList<Transaction> transactions) 
+    public void printHistory(ArrayList<Transaction> transactions) 
     {
         System.out.println("Transaction Id      Date         Time          Amount      charge/cashback      Current Balance       Transaction Type ");
         for(Transaction transaction : transactions)

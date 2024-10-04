@@ -1,20 +1,24 @@
 package com.atmservice.atmmechineview;
 import com.atmservice.card.CardService;
+import com.atmservice.card.CardView;
+import com.atmservice.card.CardViewModel;
 import com.atmservice.card.DebitCardView;
+import com.atmservice.card.DebitCardViewModel;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
+import com.atmservice.manageaccount.ManageAccountView;
 import com.atmservice.module.Card;
 import com.atmservice.module.DebitCard;
 
-public class AtmMechineViewModel
+public class AtmMechineViewModel implements AtmMechineViewModelProcess
 {
-   private AtmMechineView atmMechineView;
+   private AtmMechineViewProcess atmMechineView;
    BankDataLayer bank = BankDataLayer.getBankDataLayer();
-   AtmMechineViewModel(AtmMechineView atmMechineView) 
+   public void setAtmMechineView(AtmMechineViewProcess atmMechineView) 
    {
       this.atmMechineView = atmMechineView;
    }
-   public void checkCardValidation(long cardNumber) throws Exception 
+   public void checkCardValidation(long cardNumber) 
    {
       Card debitCard = bank.getDepitCard(cardNumber);
       if(debitCard==null)
@@ -22,16 +26,20 @@ public class AtmMechineViewModel
          LoginView.alert("This card is Invalid");
          return;
       }
+      isPinGerated(debitCard);
+   }
+   private void isPinGerated(Card debitCard) 
+   {
       if(debitCard.getPinNumber()==0)
       {
          setCardPin(debitCard);
       }
       else
       {
-        isValidPin(debitCard);
+         isValidPin(debitCard);
       }
    }
-   private void setCardPin(Card debitCard) throws Exception  
+   private void setCardPin(Card debitCard) 
    {
        int count =0;
        while(count<3)
@@ -39,7 +47,7 @@ public class AtmMechineViewModel
          count++;
          if(debitCard.getPinNumber()==0)
          {
-            atmMechineView.changePin(debitCard);
+            atmMechineView.enterPhoneNumber(debitCard);
          } 
          if(debitCard.getPinNumber()!=0)
          {
@@ -49,7 +57,7 @@ public class AtmMechineViewModel
    }
    public void changePassword(Card card,long phoneNo)  
    {
-      int pinNumber = atmMechineView.generatePin();
+      int pinNumber = atmMechineView. enterPinNumber();
       if((String.valueOf(pinNumber)).length()==4) 
       {
          if(card.setPinNumber(pinNumber,phoneNo))
@@ -70,7 +78,7 @@ public class AtmMechineViewModel
 
    public void isValidPin( Card card) 
    {
-      int pinNumber = atmMechineView.generatePin();
+      int pinNumber = atmMechineView. enterPinNumber();
       if(pinNumber==card.getPinNumber())
       {
          findCard(card);
@@ -82,7 +90,12 @@ public class AtmMechineViewModel
    {
       if(card instanceof DebitCard)
       {
-         atmMechineView.init(new CardService(new DebitCardView(card).getInstance()),card);
+         CardViewModel cardViewModel = new CardViewModel(card);
+         DebitCardViewModel debitCardViewModel = new DebitCardViewModel(card);
+         DebitCardView debitCardView = new DebitCardView(cardViewModel, debitCardViewModel);
+         debitCardViewModel.setDebitCardView(new CardView(cardViewModel),debitCardView);
+         debitCardViewModel.setTransactionViewModel(ManageAccountView.transactionProcess());
+         atmMechineView.grettingMsg(card,new CardService(debitCardViewModel));
       }
    }
 }

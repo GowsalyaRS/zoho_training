@@ -1,5 +1,2 @@
 Name,Phone no
-gowsalya,9089089087
-susila,9080026012
-susila,9012347690
-aila,9078129090
+gowsalya,9080026605

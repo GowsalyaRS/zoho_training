@@ -15,7 +15,8 @@ import com.atmservice.module.DebitCard;
 import com.atmservice.module.Transaction;
 import com.atmservice.module.TransferType;
 
-public class Reader {
+public class Reader 
+{
     private static String customerFile;
     private static String accountFile;
     private static String transactionFile;
@@ -126,5 +127,4 @@ public class Reader {
         }
         return transactions;
     }
-    
 }

@@ -1,13 +1,14 @@
 package com.atmservice.login;
 import java.util.Scanner;
 import com.atmservice.manageaccount.ManageAccountView;
-public class LoginView 
+
+public class LoginView  implements LoginViewProcess
 {
-    private LoginModelView loginModel;
+    private LoginViewModelProcess loginModel;
     static Scanner scan = new Scanner(System.in);
-	public LoginView() 
+	public LoginView(LoginViewModel loginModel) 
     {
-		loginModel = new LoginModelView(this);
+		this.loginModel = loginModel;
 	}
     public void init() 
     {
@@ -20,7 +21,7 @@ public class LoginView
     public void onSuccess() 
     {
         alert(" Successfully Login !");
-        new ManageAccountView().init();
+        ManageAccountView.accountProcess();
     }
     public static void alert(String str) 
     {

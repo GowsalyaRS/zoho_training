@@ -1,26 +1,29 @@
 package com.atmservice.manageaccount;
 import java.util.Scanner;
 import com.atmservice.customer.CustomerView;
+import com.atmservice.customer.CustomerViewModel;
 import com.atmservice.module.Account;
 import com.atmservice.module.Customer;
 import com.atmservice.module.DebitCard;
 import java.util.InputMismatchException;
 import com.atmservice.transaction.TransactionView;
+import com.atmservice.transaction.TransactionViewModel;
 
-public class ManageAccountView 
+public class ManageAccountView  implements AccountViewProcess
 {
-    private ManageAccountViewModel accountViewModel;
-    Scanner scan ;
-    public ManageAccountView()
+    private static AccountViewModelProcess accountViewModel;
+    static Scanner scan  = new Scanner(System.in); 
+    private static  TransactionView transactionView;
+    public ManageAccountView(AccountViewModelProcess accountViewModel)
     {
-        scan = new Scanner(System.in);
-        accountViewModel= new ManageAccountViewModel(this);
+        this.accountViewModel = accountViewModel; 
     }
     public void init() 
     {
         while(true)
         {
-            try {
+            try 
+            {
                 System.out.println("=====================================");
                 System.out.println("1.Create Account  \n2.Provide Card  \n3.Transaction History \n4.Exit");  
                 System.out.println("=====================================");
@@ -28,9 +31,9 @@ public class ManageAccountView
                 int option = scan.nextInt();
                 switch (option) 
                 {
-                    case 1  : scan.nextLine();createAccount();break;
+                    case 1  : scan.nextLine();getCustomerDetails();break;
                     case 2  : provideDebitCard() ;break;
-                    case 3  : new TransactionView().getHistory();break;
+                    case 3  : transaction();break;
                     case 4  : return;
                     default : System.out.println("Enter the correct option");
                 }
@@ -42,21 +45,31 @@ public class ManageAccountView
             }
         }
     }
-    private void createAccount() 
+    private void getCustomerDetails() 
     {
-        new CustomerView().addCustomer();
+        CustomerViewModel customerViewModel = new  CustomerViewModel();
+        CustomerView customerView = new CustomerView(customerViewModel);
+        customerViewModel.setCustomerView(customerView);
+        Customer customer =  customerView.enterCustomerData();
+        if(customer!=null)
+        {
+            createAccount(customer);
+        }
     }
     public void createAccount(Customer customer) 
     {
         System.out.println("Enter the balance USD ");
         double amount = scan.nextDouble();
-        accountViewModel.validAmount(customer,amount);
+        if(accountViewModel.validAmount(amount))
+        {
+            accountViewModel.createAccount(customer,amount);
+        }
     }
-    public void detailsAccount(Account account) 
+    public void printAccountDetails(Account account) 
     {
         System.out.println( "Your Account Number is "+  account.getAccountNumber()); 
     }
-    public Account findAccount() 
+    public static Account findAccount() 
     {
        System.out.println("Enter the Account no ");
        Long accountNumber = scan.nextLong();
@@ -66,28 +79,36 @@ public class ManageAccountView
     public void provideDebitCard()
     {
         Account account = findAccount();
-        try
+        if(account!=null)
         {
-           provideDebitCard(account);
+           accountViewModel.provideDebitCard(account);
         }
-        catch(Exception e)
+        else
         {
-          System.out.println(e.getMessage());
+            System.out.println("Account Number is Invalid..!");
         }
     }
-    public void provideDebitCard(Account account) throws Exception 
-    {
-       if(account!=null)
-       {
-          accountViewModel.addAccountDetails(account);
-       }
-       else
-       {
-           System.out.println("Account Number is Invalid..!");
-       }
-    }
-    public void provideDebitCard(DebitCard card) 
+    public void printDebitCard(DebitCard card) 
     {
         System.out.println("Your Debit card No : " + card.getCardNumber());
+    }
+    public static void accountProcess() 
+    {
+        ManageAccountViewModel accountViewModel = new ManageAccountViewModel();
+        ManageAccountView accountView = new ManageAccountView(accountViewModel);
+        accountViewModel.setAccountView(accountView);
+        accountView.init();
+    }
+    public  static TransactionViewModel transactionProcess() 
+    {
+        TransactionViewModel transactionViewModel = new TransactionViewModel();
+        transactionView = new TransactionView(transactionViewModel);
+        transactionViewModel.setTransactionView(transactionView);
+        return transactionViewModel;
+    }
+    public void transaction()
+    {
+        transactionProcess();
+        transactionView.printAccountNumber();
     }
 }

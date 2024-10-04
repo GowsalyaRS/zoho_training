@@ -4,19 +4,19 @@ import com.atmservice.login.LoginView;
 import com.atmservice.module.Card;
 import com.atmservice.module.Transaction;
 import com.atmservice.module.TransferType;
-import com.atmservice.transaction.TransactionViewModel;
 
-public class DebitCardViewModel extends CardViewModel
+public class DebitCardViewModel extends CardViewModel implements DebitCardViewModelProcess
 {
-    private DebitCardView debitCardView;
-    private TransactionViewModel transactionViewModel;
-    protected Card card;
-    public DebitCardViewModel(DebitCardView debitCardView,Card card) 
+    private DebitCardViewProcess debitCardView;
+    public DebitCardViewModel(Card card)
     {
-        super(new CardView(card),card); 
-        this.debitCardView = debitCardView;
+        super(card);
         this.card = card;
-        transactionViewModel = new TransactionViewModel(); 
+    }
+    public void setDebitCardView(CardViewProcess cardView, DebitCardViewProcess debitCardView) 
+    {
+        super.setCardView(cardView);
+        this.debitCardView = debitCardView;
     }
     public double calculatedCharge(double amount) 
     {
@@ -41,7 +41,7 @@ public class DebitCardViewModel extends CardViewModel
     {
         card.setBalance(card.getBalance()+cashback); 
     }
-    public boolean isVaidAmount(double amount, Card card) 
+    public boolean isVaidAmount(double amount) 
     {
         if(amount%5!=0) 
         {
@@ -57,9 +57,9 @@ public class DebitCardViewModel extends CardViewModel
     }
     public void swipe() 
     {
-        double amount = debitCardView.isValidAmount();
+        double amount = debitCardView.isEnterValidAmount();
         double cashback = calculatedCashback(amount); 
-        if (isVaidAmount(amount))
+        if (isVaidAmounts(amount))
         {
            swipe(amount);
            addCashback(cashback);
@@ -70,9 +70,9 @@ public class DebitCardViewModel extends CardViewModel
     } 
     public void withdraw()
     {
-        double amount = debitCardView.isValidAmount();
+        double amount = debitCardView.isEnterValidAmount();
         double calculatedCharge =calculatedCharge(amount);
-        if(isVaidAmount(amount,card))
+        if(isVaidAmount(amount))
         {
             withdraw(amount+calculatedCharge);
             Transaction transaction = new Transaction(card.getAccountNo(),TransferType.WITHDRAW, amount, card.getBalance(),calculatedCharge*-1);
@@ -80,5 +80,4 @@ public class DebitCardViewModel extends CardViewModel
             debitCardView.withdrawDetails(calculatedCharge);
         }
     }
-
 }

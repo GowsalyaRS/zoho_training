@@ -1,25 +1,23 @@
 package com.atmservice.customer;
 import com.atmservice.datalayer.BankDataLayer;
 import com.atmservice.login.LoginView;
-import com.atmservice.manageaccount.ManageAccountView;
 import com.atmservice.module.Customer;
 
-public class CustomerViewModel 
+public class CustomerViewModel  implements CustomerViewModelProcess
 {
-    private CustomerView customerView;
-    public CustomerViewModel(CustomerView customerView) 
+    private CustomerViewProcess customerView;
+    public void setCustomerView(CustomerViewProcess customerView) 
     {
         this.customerView = customerView;
     }
-    public void isAvailableCustomer(Customer customer) 
+    public boolean isValidCustomer(Customer customer) 
     {
         if(BankDataLayer.getBankDataLayer().getCustomer().get(customer.getPhoneNo())!=null)
         {
-           LoginView.alert("Already your create the account");
+           LoginView.alert("Already create the account");
+           return true;
         }
-        else
-        {
-            new ManageAccountView().createAccount(customer);
-        }
+        customerView.greatingMsg(customer.getName());
+        return false;
     }
 }

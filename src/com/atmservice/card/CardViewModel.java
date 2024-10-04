@@ -6,18 +6,28 @@ import com.atmservice.module.TransferType;
 import com.atmservice.service.CardProcess;
 import com.atmservice.transaction.TransactionViewModel;
 
-public class CardViewModel implements CardProcess
+public class CardViewModel implements CardProcess,CardViewModelProcess
 {
-    private CardView cardView;
-    private TransactionViewModel transactionViewModel;
+    private CardViewProcess cardView;
+    protected TransactionViewModel transactionViewModel;
     protected Card card;
-    public CardViewModel(CardView cardView,Card card) 
+    public CardViewModel(Card card)
     {
-        this.cardView = cardView ;
-        this.card = card;
-        transactionViewModel = new  TransactionViewModel();
+      this.card = card;
     }
-    public boolean isVaidAmount(double amount) 
+    public void setCardView(CardViewProcess cardView) 
+    {
+        this.cardView = cardView;
+    }
+    public CardViewProcess getCardView() 
+    {
+        return cardView;
+    }
+    public void setTransactionViewModel(TransactionViewModel transactionViewModel) 
+    {
+        this.transactionViewModel = transactionViewModel;
+    }
+    public boolean isVaidAmounts(double amount) 
     {
         if(card.getBalance()<amount) 
         {
@@ -32,8 +42,8 @@ public class CardViewModel implements CardProcess
     }
     public void swipe()
     {
-        double amount = cardView.isValidAmount();
-        if (isVaidAmount(amount))
+        double amount = cardView.isEnterValidAmount();
+        if (isVaidAmounts(amount))
         {
             swipe(amount);
             Transaction transaction = new Transaction(card.getAccountNo(), TransferType.SWIPE, amount, card.getBalance());
@@ -45,9 +55,9 @@ public class CardViewModel implements CardProcess
         debitProcess(amount);
         cardView.swipeDetails(amount);
     }
-     public void deposit() 
+    public void deposit() 
     {
-        double amount = cardView.isValidAmount();
+        double amount = cardView.isEnterValidAmount();
         deposit(amount);
         cardView.depositeView(amount);
     }
@@ -59,8 +69,8 @@ public class CardViewModel implements CardProcess
     }
     public void withdraw ()
     {
-        double amount = cardView.isValidAmount();
-        if (isVaidAmount(amount))
+        double amount = cardView.isEnterValidAmount();
+        if (isVaidAmounts(amount))
         {
             withdraw(amount);
             Transaction transaction = new Transaction(card.getAccountNo(), TransferType.WITHDRAW, amount, card.getBalance());
@@ -72,8 +82,14 @@ public class CardViewModel implements CardProcess
         debitProcess(amount);
         cardView.withdrawDetails(amount);
     }
+    
     public double showBalance() 
     {
+       System.out.println(card);
         return card.getBalance();
+    }
+    public double getBalance() 
+    {
+        return showBalance();
     }
 }
