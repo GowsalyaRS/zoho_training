@@ -1,5 +1,7 @@
 package com.atmservice.transaction;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.AccountFile;
+import com.atmservice.filedatabase.TransactionFile;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Transaction;
@@ -30,7 +32,10 @@ public class TransactionViewModel implements TransactionViewModelProcess
     {
         long accountNo =  transaction.getAccountNo();
         Account account = BankDataLayer.getBankDataLayer().getAccount().get(accountNo);
-        BankDataLayer.getBankDataLayer().setTransactionHistory(account,transaction);
+        BankDataLayer bank =  BankDataLayer.getBankDataLayer();
+        bank.setAccountFile(new AccountFile());  // Inject account data
+        bank.setTransactionFile(new TransactionFile()); // Inject trasaction data
+        bank.setTransactionHistory(account,transaction);
         account.setBalance(transaction.getCurrentBalance());
     }
 }

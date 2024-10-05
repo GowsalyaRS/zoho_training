@@ -1,6 +1,13 @@
 import com.atmservice.atmmechineview.AtmMechineView;
 import com.atmservice.atmmechineview.AtmMechineViewModel;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.AccountFile;
+import com.atmservice.filedatabase.AccountFileProcess;
+import com.atmservice.filedatabase.CardFile;
+import com.atmservice.filedatabase.CardFileProcess;
+import com.atmservice.filedatabase.CustomerFile;
+import com.atmservice.filedatabase.TransactionFile;
+import com.atmservice.filedatabase.TransactionFileProcess;
 import com.atmservice.login.LoginView;
 import com.atmservice.login.LoginViewModel;
 import com.atmservice.module.Bank;
@@ -16,7 +23,7 @@ public class App
         String bankName = scan.nextLine();
         BankDataLayer.getInstance().setBankProperty(new Bank(bankName));
         System.out.println("\t\tWelcome "+ bankName + " Bank ");
-        BankDataLayer.getInstance().setPerperty();
+        setPerperty();
         while(true)
         { 
             try
@@ -41,6 +48,19 @@ public class App
             }
         }
     }
+    public static void setPerperty() throws Exception
+    {
+       BankDataLayer bank=  BankDataLayer.getBankDataLayer().getInstance();
+       CustomerFile customerFile = new CustomerFile();
+       AccountFileProcess accountFile = new AccountFile();
+       CardFileProcess cardFile = new CardFile();
+       TransactionFileProcess transactionFile = new TransactionFile();
+       bank.setCustomerFile(customerFile);
+       bank.setAccountFile(accountFile); 
+       bank.setCardFile(cardFile);
+       bank.setTransactionFile(transactionFile);
+       bank.setPerperty();
+    }   
     private static void loginProcess() 
     {
        LoginViewModel loginViewModel = new LoginViewModel();

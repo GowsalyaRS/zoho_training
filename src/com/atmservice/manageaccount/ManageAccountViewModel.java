@@ -1,5 +1,7 @@
 package com.atmservice.manageaccount;
 import com.atmservice.datalayer.BankDataLayer;
+import com.atmservice.filedatabase.AccountFile;
+import com.atmservice.filedatabase.CustomerFile;
 import com.atmservice.login.LoginView;
 import com.atmservice.module.Account;
 import com.atmservice.module.Customer;
@@ -29,6 +31,8 @@ public class ManageAccountViewModel implements AccountViewModelProcess
     public void createAccount(Customer customer,double amount) 
     {
         Account account = new Account(customer, amount);
+        bank.setCustomerFile(new CustomerFile());
+        bank.setAccountFile(new AccountFile());
         bank.writeAccountFile(account);
         accountView.printAccountDetails(account);  
     }

@@ -1,6 +1,8 @@
 package com.atmservice.datalayer;
-import com.atmservice.filedatabase.Reader;
-import com.atmservice.filedatabase.Writer;
+import com.atmservice.filedatabase.AccountFileProcess;
+import com.atmservice.filedatabase.CardFileProcess;
+import com.atmservice.filedatabase.CustomerFileProcess;
+import com.atmservice.filedatabase.TransactionFileProcess;
 import com.atmservice.module.Account;
 import com.atmservice.module.Bank;
 import com.atmservice.module.Card;
@@ -21,8 +23,24 @@ public class BankDataLayer
     private Map <Account,DebitCard> accountCards= new HashMap();
     private Map <Long,Customer> customers= new HashMap<>();
     private Map <Account,ArrayList<Transaction>> transactionHistory = new HashMap();
+    private CustomerFileProcess customerFile;
+    private AccountFileProcess accountFile;
+    private CardFileProcess cardFile;
+    private TransactionFileProcess transactionFile;
     private BankDataLayer()
     {   
+    }
+    public void setCustomerFile(CustomerFileProcess customerFile) {
+        this.customerFile = customerFile;
+    }
+    public void setAccountFile(AccountFileProcess accountFile) {
+        this.accountFile = accountFile;
+    }
+    public void setCardFile(CardFileProcess cardFile) {
+        this.cardFile = cardFile;
+    }
+    public void setTransactionFile(TransactionFileProcess transactionFile) {
+        this.transactionFile = transactionFile;
     }
     public static BankDataLayer getInstance()
     {
@@ -61,7 +79,7 @@ public class BankDataLayer
         accountCards.put(account,depitCard);
         try
         {
-          Writer.writeCardFile(depitCard);
+          cardFile.writeCardFile(depitCard);
         }
         catch(Exception e)
         {
@@ -81,17 +99,17 @@ public class BankDataLayer
     }
     public void setTransaction(Transaction transaction)
     {
-       Account account =  accounts.get(transaction.getAccountNo());
-       if(transactionHistory.get(account)==null)
-       {
+        Account account =  accounts.get(transaction.getAccountNo());
+        if(transactionHistory.get(account)==null)
+        {
           ArrayList <Transaction> trans =new ArrayList<>();
           trans.add(transaction);
           transactionHistory.put(account,trans);
-       }
-       else
-       {
+        }
+        else
+        {
           transactionHistory.get(account).add(transaction);
-       }
+        }
     }
     public  void setBankProperty(Bank bank)
     {
@@ -100,10 +118,10 @@ public class BankDataLayer
     public  void setPerperty() throws Exception 
     {
         BankDataLayer bank = BankDataLayer.getBankDataLayer();
-        bank.setCustomer(Reader.readCustomerFile());  
-        bank.setAccount(Reader.readAccountFile()); 
-        bank.setDebitCard(Reader.readCardFile());
-        bank.setTransaction(Reader.readTransactionFile());   
+        bank.setCustomer(customerFile.readCustomerFile());  
+        bank.setAccount(accountFile.readAccountFile()); 
+        bank.setDebitCard(cardFile.readCardFile());
+        bank.setTransaction(transactionFile.readTransactionFile());   
     }
     public void setTransactionHistory(Account account,Transaction transaction)
     {
@@ -116,8 +134,8 @@ public class BankDataLayer
         transactions.add(transaction);
         try
         {
-           Writer.writeTransactionFile(transaction);
-           Writer.modifyAccountFile(getAccount());
+           transactionFile.writeTransactionFile(transaction);
+           accountFile.modifyAccountFile(getAccount());
         }
         catch(Exception e)
         {
@@ -180,12 +198,12 @@ public class BankDataLayer
         setAccountDetails(account);   
         try
         {
-            Writer.writeCustomerFile(account.getCustomer());
-            Writer.writeAccountFile(account);
+            customerFile.writeCustomerFile(account.getCustomer());
+            accountFile.writeAccountFile(account);
         }
         catch (Exception e)
         {
-          e.printStackTrace();
+            e.printStackTrace();
         }
     }
     public Card getDepitCard(long cardNumber) 
@@ -196,23 +214,21 @@ public class BankDataLayer
     {
         try
         {
-          Writer.modifyCardFile(BankDataLayer.getBankDataLayer().getDepitCard());
+          cardFile.modifyCardFile(BankDataLayer.getBankDataLayer().getDepitCard());
         }
         catch (Exception e)
         {
-            Writer.printMsg();
         }
     }
     public void createAccount(Account account) 
     {
         try
         {
-           Writer.writeCustomerFile(account.getCustomer());
-           Writer.writeAccountFile(account);
+           customerFile.writeCustomerFile(account.getCustomer());
+           accountFile.writeAccountFile(account);
         }
         catch(Exception e)
         {
-           Writer.printMsg();
         }
     }
 }
